@@ -10,10 +10,11 @@ from asciinema_automation.instruction import ShellInstruction, DelayInstruction,
 
 class Script:
 
-    def __init__(self, inputfile, asciinema_arguments, wait, delay, standart_deviation):
+    def __init__(self, inputfile, outputfile, asciinema_arguments, wait, delay, standart_deviation):
 
         # Set members
         self.inputfile = inputfile
+        self.outputfile = outputfile
         self.asciinema_arguments = asciinema_arguments
         self.delay = delay/1000.
         self.wait = wait/1000.
@@ -42,7 +43,7 @@ class Script:
 
     def execute(self):
         self.process = pexpect.spawn(
-            "asciinema rec "+self.asciinema_arguments)
+            "asciinema rec "+self.outputfile+self.asciinema_arguments)
         self.process.expect("\n")
         self.process.expect("\n")
         for instruction in self.instructions:
