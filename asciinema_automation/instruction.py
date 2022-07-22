@@ -16,17 +16,22 @@ class ShellInstruction(Instruction):
         self.command = command
 
     def run(self, script):
+        # Write intruction
         for character in self.command:
             if script.standart_deviation is None:
                 time.sleep(script.delay)
             else:
-                print(script.delay, script.standart_deviation, abs(random.normalvariate(
-                    script.delay, script.standart_deviation)))
                 time.sleep(abs(random.gauss(
                     script.delay, script.standart_deviation)))
-
             script.process.send(str(character))
             script.process.expect(str(character))
+
+        # End instruction
+        if script.standart_deviation is None:
+            time.sleep(script.delay)
+        else:
+            time.sleep(abs(random.gauss(
+                script.delay, script.standart_deviation)))
         script.process.send("\n")
         script.process.expect("\n")
 

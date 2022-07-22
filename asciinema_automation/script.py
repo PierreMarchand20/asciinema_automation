@@ -43,9 +43,10 @@ class Script:
 
     def execute(self):
         self.process = pexpect.spawn(
-            "asciinema rec "+self.outputfile+self.asciinema_arguments)
+            "asciinema rec "+self.outputfile+" "+self.asciinema_arguments)
         self.process.expect("\n")
         self.process.expect("\n")
         for instruction in self.instructions:
             time.sleep(self.wait)
             instruction.run(self)
+        time.sleep(self.wait)
