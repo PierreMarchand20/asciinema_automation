@@ -50,3 +50,4 @@ class Script:
             time.sleep(self.wait)
             instruction.run(self)
         time.sleep(self.wait)
+        self.process.sendcontrol('d')
