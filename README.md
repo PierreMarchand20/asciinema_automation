@@ -2,6 +2,12 @@
 
 Asciinema-Automation is a Python package which provides a small CLI utility to automate [asciinema](https://asciinema.org) recordings. The only dependencies are asciinema and [Pexpect](https://pexpect.readthedocs.io/).
 
+## Example
+
+![demo](demo.gif)
+
+This example is generated reading with `asciinema-automation` a script that calls `asciinema-automation` which reads the `hello_world.sh` example in this repository :upside_down_face:
+
 ## Installation
 
 You need to call `git clone` to recover the source code of this repository
