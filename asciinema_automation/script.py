@@ -32,7 +32,8 @@ class Script:
         wait_time_regex = re.compile(r'^#\$ wait (\d*)(?!\S)')
         delay_time_regex = re.compile(r'^#\$ delay (\d*)(?!\S)')
         control_command_regex = re.compile(r'^#\$ control ([a-z])(?!\S)')
-        expect_regex = re.compile(r'^#\$ expect \b(\w*)\b(?!\S)')
+        expect_regex = re.compile(
+            r'^#\$ expect ([\w\!\@\#\$\%\^\&\*\(\)\_\+\-\=\[\]\{\}\;\'\:\"\\\|\,\.\<\>\/\?]*)(?!\S)')
 
         # Read script
         with open(inputfile) as f:
@@ -65,6 +66,7 @@ class Script:
                   " "+self.asciinema_arguments)
         self.process = pexpect.spawn(
             "asciinema rec "+self.outputfile+" "+self.asciinema_arguments)
+        # self.process.logfile = sys.stdout.buffer
         self.process.expect("\n")
         self.process.expect("\n")
         for instruction in self.instructions:
