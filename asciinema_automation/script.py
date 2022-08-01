@@ -5,14 +5,14 @@ import pexpect
 import pexpect.replwrap
 import os
 import sys
-from asciinema_automation.instruction import ShellInstruction, DelayInstruction, WaitInstruction, ControlInstruction
+from asciinema_automation.instruction import ShellInstruction, DelayInstruction, WaitInstruction, ControlInstruction, ExpectInstruction
 
 
 class Script:
 
     def __init__(self, inputfile, outputfile, asciinema_arguments, wait, delay, standart_deviation, verbosity):
 
-        # Set members
+        # Set members from arguments
         self.inputfile = inputfile
         self.outputfile = outputfile
         self.asciinema_arguments = asciinema_arguments
@@ -20,6 +20,11 @@ class Script:
         self.wait = wait/1000.
         self.standart_deviation = standart_deviation/1000.
         self.verbosity = verbosity
+
+        # Default values for data members
+        self.expected = "\r\n"
+
+        # Create data members
         self.instructions = []
         self.process = None
 
@@ -27,6 +32,7 @@ class Script:
         wait_time_regex = re.compile(r'^#\$ wait (\d*)(?!\S)')
         delay_time_regex = re.compile(r'^#\$ delay (\d*)(?!\S)')
         control_command_regex = re.compile(r'^#\$ control ([a-z])(?!\S)')
+        expect_regex = re.compile(r'^#\$ expect \b(\w*)\b(?!\S)')
 
         # Read script
         with open(inputfile) as f:
@@ -44,6 +50,10 @@ class Script:
                 control_command = control_command_regex.search(
                     line, 0).group(1)
                 self.instructions.append(ControlInstruction(control_command))
+            elif line.startswith("#$ expect"):
+                expect = expect_regex.search(
+                    line, 0).group(1)
+                self.instructions.append(ExpectInstruction(expect))
             elif line.startswith("#"):
                 pass
             else:

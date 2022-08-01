@@ -1,6 +1,7 @@
+#$ delay 10
 cat examples/hello_world.sh
 
-#$ wait 1000
-asciinema-automation --asciinema-arguments " --overwrite" examples/hello_world.sh test.cast
+asciinema-automation --asciinema-arguments " --overwrite" examples/hello_world.sh examples/test.cast
 
-asciinema play test.cast
+#$ expect delay
+asciinema play examples/test.cast

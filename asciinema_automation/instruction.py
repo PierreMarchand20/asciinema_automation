@@ -36,7 +36,7 @@ class ShellInstruction(Instruction):
             time.sleep(abs(random.gauss(
                 script.delay, script.standart_deviation)))
         script.process.send("\n")
-        script.process.expect("\n")
+        script.process.expect(script.expected)
 
 
 class WaitInstruction(Instruction):
@@ -67,3 +67,13 @@ class ControlInstruction(Instruction):
     def run(self, script):
         super().run(script)
         script.process.sendcontrol(self.control)
+
+
+class ExpectInstruction(Instruction):
+    def __init__(self, expect):
+        super().__init__()
+        self.expect = expect
+
+    def run(self, script):
+        super().run(script)
+        script.expected = self.expect
