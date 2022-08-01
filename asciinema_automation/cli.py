@@ -6,12 +6,19 @@ def cli():
 
     # Command line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('inputfile', type=str)
-    parser.add_argument('outputfile', type=str)
-    parser.add_argument('-aa', '--asciinema-arguments', type=str, default="")
-    parser.add_argument('-d', '--delay', type=int, default=150)
-    parser.add_argument('-w', '--wait', type=int, default=80)
-    parser.add_argument('-sd', '--standart-deviation', type=int, default=60)
+    parser.add_argument(
+        'inputfile', help="file containing list of instructions", type=str)
+    parser.add_argument(
+        'outputfile', help="file containing recording", type=str)
+
+    parser.add_argument('-aa', '--asciinema-arguments', type=str,
+                        default="", help="arguments to be passed to asciinema")
+    parser.add_argument('-d', '--delay', type=int, default=150,
+                        help="mean for gaussian used to generate time between key strokes")
+    parser.add_argument('-w', '--wait', type=int, default=80,
+                        help="time between each instructions")
+    parser.add_argument('-sd', '--standart-deviation', type=int, default=60,
+                        help="standart deviation for gaussian used to generate time between key strokes")
     parser.add_argument("-v", "--verbose",
                         help="increase output verbosity", action="store_true")
 
