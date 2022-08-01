@@ -7,6 +7,8 @@ import random
 class Instruction:
 
     def run(self, script):
+        if script.verbosity:
+            print(self.__class__.__name__)
         pass
 
 
@@ -16,6 +18,7 @@ class ShellInstruction(Instruction):
         self.command = command
 
     def run(self, script):
+        super().run(script)
         # Write intruction
         for character in self.command:
             if script.standart_deviation is None:
@@ -42,6 +45,7 @@ class WaitInstruction(Instruction):
         self.wait = wait
 
     def run(self, script):
+        super().run(script)
         script.wait = self.wait
 
 
@@ -51,4 +55,15 @@ class DelayInstruction(Instruction):
         self.delay = delay
 
     def run(self, script):
+        super().run(script)
         script.delay = self.delay
+
+
+class ControlInstruction(Instruction):
+    def __init__(self, control):
+        super().__init__()
+        self.control = control
+
+    def run(self, script):
+        super().run(script)
+        script.process.sendcontrol(self.control)
