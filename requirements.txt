@@ -1,1 +1,2 @@
-pexpect==4.8.0
+pexpect>=4.8.0
+asciinema>=2.2.0
