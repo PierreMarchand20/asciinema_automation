@@ -5,7 +5,7 @@ import pexpect
 import pexpect.replwrap
 import os
 import sys
-from asciinema_automation.instruction import ShellInstruction, DelayInstruction, WaitInstruction, ControlInstruction, ExpectInstruction
+from asciinema_automation.instruction import ShellInstruction, DelayInstruction, WaitInstruction, ControlInstruction, ExpectInstruction, SendInstruction
 
 
 class Script:
@@ -22,7 +22,8 @@ class Script:
         self.verbosity = verbosity
 
         # Default values for data members
-        self.expected = "\r\n"
+        self.expected = "\n"
+        self.send = "\n"
 
         # Create data members
         self.instructions = []
@@ -34,6 +35,8 @@ class Script:
         control_command_regex = re.compile(r'^#\$ control ([a-z])(?!\S)')
         expect_regex = re.compile(
             r'^#\$ expect ([\w\!\@\#\$\%\^\&\*\(\)\_\+\-\=\[\]\{\}\;\'\:\"\\\|\,\.\<\>\/\?]*)(?!\S)')
+        send_regex = re.compile(
+            r'^#\$ send ([\w\!\@\#\$\%\^\&\*\(\)\_\+\-\=\[\]\{\}\;\'\:\"\\\|\,\.\<\>\/\?]*)(?!\S)')
 
         # Read script
         with open(inputfile) as f:
@@ -52,9 +55,15 @@ class Script:
                     line, 0).group(1)
                 self.instructions.append(ControlInstruction(control_command))
             elif line.startswith("#$ expect"):
-                expect = expect_regex.search(
-                    line, 0).group(1)
+                expect = ""
+                if expect_regex.search(line, 0) is not None:
+                    expect = expect_regex.search(line, 0).group(1)
                 self.instructions.append(ExpectInstruction(expect))
+            elif line.startswith("#$ send"):
+                send = ""
+                if send_regex.search(line, 0) is not None:
+                    send = send_regex.search(line, 0).group(1)
+                self.instructions.append(SendInstruction(send))
             elif line.startswith("#"):
                 pass
             else:
