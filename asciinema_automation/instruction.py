@@ -69,6 +69,18 @@ class ControlInstruction(Instruction):
         script.process.sendcontrol(self.control)
 
 
+class SendControlInstruction(Instruction):
+    def __init__(self, control):
+        super().__init__()
+        self.control = control
+
+    def run(self, script):
+        super().run(script)
+        print(self.control, script.expected)
+        script.process.sendcontrol(self.control)
+        script.process.expect(script.expected)
+
+
 class ExpectInstruction(Instruction):
     def __init__(self, expect):
         super().__init__()
