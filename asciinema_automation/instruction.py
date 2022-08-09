@@ -1,4 +1,5 @@
 
+import logging
 import asciinema_automation.script
 import time
 import random
@@ -7,20 +8,49 @@ import random
 class Instruction:
 
     def run(self, script):
-        if script.verbosity:
-            print(self.__class__.__name__)
         pass
 
 
-class ShellInstruction(Instruction):
-
-    def __init__(self, command):
-        self.command = command
+class ChangeWaitInstruction(Instruction):
+    def __init__(self, wait):
+        super().__init__()
+        self.wait = wait
 
     def run(self, script):
         super().run(script)
+        script.wait = self.wait
+
+
+class ChangeDelayInstruction(Instruction):
+    def __init__(self, delay):
+        super().__init__()
+        self.delay = delay
+
+    def run(self, script):
+        super().run(script)
+        script.delay = self.delay
+
+
+class ExpectInstruction(Instruction):
+    def __init__(self, expect_value: str):
+        super().__init__()
+        self.expect_value = expect_value
+
+    def run(self, script):
+        super().run(script)
+        script.process.expect(self.expect_value)
+
+
+class SendInstruction(Instruction):
+    def __init__(self, send_value):
+        super().__init__()
+        self.send_value = send_value
+
+    def run(self, script):
+        super().run(script)
+
         # Write intruction
-        for character in self.command:
+        for character in self.send_value:
             if script.standart_deviation is None:
                 time.sleep(script.delay)
             else:
@@ -35,38 +65,26 @@ class ShellInstruction(Instruction):
         else:
             time.sleep(abs(random.gauss(
                 script.delay, script.standart_deviation)))
-        script.process.send(script.send)
-        script.process.expect(script.expected)
 
 
-class WaitInstruction(Instruction):
-    def __init__(self, wait):
+class SendCharacterInstruction(Instruction):
+    def __init__(self, send_value):
         super().__init__()
-        self.wait = wait
+        self.send_value = send_value
 
     def run(self, script):
         super().run(script)
-        script.wait = self.wait
+        script.process.send(self.send_value)
 
 
-class DelayInstruction(Instruction):
-    def __init__(self, delay):
-        super().__init__()
-        self.delay = delay
+class SendShellInstruction(SendInstruction):
 
-    def run(self, script):
-        super().run(script)
-        script.delay = self.delay
-
-
-class ControlInstruction(Instruction):
-    def __init__(self, control):
-        super().__init__()
-        self.control = control
+    def __init__(self, command):
+        super().__init__(command)
 
     def run(self, script):
         super().run(script)
-        script.process.sendcontrol(self.control)
+        script.process.send("\n")
 
 
 class SendControlInstruction(Instruction):
@@ -76,26 +94,32 @@ class SendControlInstruction(Instruction):
 
     def run(self, script):
         super().run(script)
-        print(self.control, script.expected)
         script.process.sendcontrol(self.control)
-        script.process.expect(script.expected)
 
 
-class ExpectInstruction(Instruction):
-    def __init__(self, expect):
+class SendArrowInstruction(Instruction):
+
+    KEY_UP = '\x1b[A'
+    KEY_DOWN = '\x1b[B'
+    KEY_RIGHT = '\x1b[C'
+    KEY_LEFT = '\x1b[D'
+
+    def __init__(self, send, num):
         super().__init__()
-        self.expect = expect
-
-    def run(self, script):
-        super().run(script)
-        script.expected = self.expect
-
-
-class SendInstruction(Instruction):
-    def __init__(self, send):
-        super().__init__()
+        self.mapping = dict()
+        self.mapping["up"] = '\x1b[A'
+        self.mapping["down"] = '\x1b[B'
+        self.mapping["right"] = '\x1b[C'
+        self.mapping["left"] = '\x1b[D'
         self.send = send
+        self.num = num
 
     def run(self, script):
         super().run(script)
-        script.send = self.send
+        for _ in range(self.num):
+            if script.standart_deviation is None:
+                time.sleep(script.delay)
+            else:
+                time.sleep(abs(random.gauss(
+                    script.delay, script.standart_deviation)))
+            script.process.sendline(self.mapping[self.send])

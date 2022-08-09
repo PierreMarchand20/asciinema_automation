@@ -1,4 +1,5 @@
 import codecs
+import pathlib
 import re
 import subprocess
 import time
@@ -6,7 +7,7 @@ import pexpect
 import pexpect.replwrap
 import os
 import sys
-from asciinema_automation.instruction import ShellInstruction, DelayInstruction, WaitInstruction, ControlInstruction, ExpectInstruction, SendInstruction, SendControlInstruction
+from asciinema_automation.instruction import ChangeDelayInstruction, ChangeWaitInstruction, ExpectInstruction, SendInstruction, SendShellInstruction, SendControlInstruction, SendArrowInstruction, SendCharacterInstruction
 
 # To read escaped character from instructions
 # https://stackoverflow.com/a/24519338/5913047
@@ -29,7 +30,7 @@ def decode_escapes(s):
 
 class Script:
 
-    def __init__(self, inputfile, outputfile, asciinema_arguments, wait, delay, standart_deviation, verbosity):
+    def __init__(self, inputfile: pathlib.Path, outputfile: pathlib.Path, asciinema_arguments: str, wait, delay, standart_deviation):
 
         # Set members from arguments
         self.inputfile = inputfile
@@ -38,7 +39,6 @@ class Script:
         self.delay = delay/1000.
         self.wait = wait/1000.
         self.standart_deviation = standart_deviation/1000.
-        self.verbosity = verbosity
 
         # Default values for data members
         self.expected = "\n"
@@ -51,15 +51,16 @@ class Script:
         # Compile regex
         wait_time_regex = re.compile(r'^#\$ wait (\d*)(?!\S)')
         delay_time_regex = re.compile(r'^#\$ delay (\d*)(?!\S)')
-        control_command_regex = re.compile(r'^#\$ control ([a-z])(?!\S)')
         sendcontrol_command_regex = re.compile(
             r'^#\$ sendcontrol ([a-z])(?!\S)')
+        sendcharacter_command_regex = re.compile(
+            r'^#\$ sendcharacter (.)(?!\S)')
         expect_regex = re.compile(
-            r'^#\$ expect ([\w\!\@\#\$\%\^\&\*\(\)\_\+\-\=\[\]\{\}\;\'\:\"\\\|\,\.\<\>\/\?]*)(?!\S)')
+            r'^#\$ expect (.*)(?!\S)')
         send_regex = re.compile(
-            r'^#\$ send ([\w\!\@\#\$\%\^\&\*\(\)\_\+\-\=\[\]\{\}\;\'\:\"\\\|\,\.\<\>\/\?]*)(?!\S)')
-        check_special_character_regex = re.compile(
-            r'\\\\[\w]*')
+            r'^#\$ send (.*)(?!\S)')
+        arrow_command_regex = re.compile(
+            r'^#\$ sendarrow (down|up|left|right)(?:\s([\d]+))?(?!\S)')
 
         # Read script
         with open(inputfile) as f:
@@ -68,45 +69,54 @@ class Script:
         for line in lines:
             if line.startswith("#$ wait"):
                 wait_time = wait_time_regex.search(line, 0).group(1)
-                self.instructions.append(WaitInstruction(int(wait_time)/1000))
+                self.instructions.append(
+                    ChangeWaitInstruction(int(wait_time)/1000))
             elif line.startswith("#$ delay"):
                 delay_time = delay_time_regex.search(line, 0).group(1)
                 self.instructions.append(
-                    DelayInstruction(int(delay_time)/1000))
-            elif line.startswith("#$ control"):
-                control_command = control_command_regex.search(
-                    line, 0).group(1)
-                self.instructions.append(ControlInstruction(control_command))
+                    ChangeDelayInstruction(int(delay_time)/1000))
             elif line.startswith("#$ sendcontrol"):
                 sendcontrol_command = sendcontrol_command_regex.search(
                     line, 0).group(1)
                 self.instructions.append(
                     SendControlInstruction(sendcontrol_command))
+            elif line.startswith("#$ sendcharacter"):
+                sendcharacter_command = sendcharacter_command_regex.search(
+                    line, 0).group(1)
+                self.instructions.append(
+                    SendCharacterInstruction(sendcharacter_command))
+            elif line.startswith("#$ sendarrow"):
+                print(arrow_command_regex.search(
+                    line, 0).groups())
+                arrow_command = arrow_command_regex.search(
+                    line, 0).group(1)
+                arrow_num = arrow_command_regex.search(
+                    line, 0).group(2)
+                if arrow_num is None:
+                    arrow_num = 1
+                self.instructions.append(
+                    SendArrowInstruction(arrow_command, int(arrow_num)))
             elif line.startswith("#$ expect"):
-                expect = ""
+                expect_value = ""
                 if expect_regex.search(line, 0) is not None:
-                    expect = expect_regex.search(line, 0).group(1)
-                    if check_special_character_regex.search(repr(expect), 0) is not None:
-                        expect = decode_escapes(expect)
-                self.instructions.append(ExpectInstruction(expect))
+                    expect_value = expect_regex.search(line, 0).group(1)
+                    expect_value = decode_escapes(expect_value)
+                self.instructions.append(ExpectInstruction(expect_value))
             elif line.startswith("#$ send"):
-                send = ""
+                send_value = ""
                 if send_regex.search(line, 0) is not None:
-                    send = send_regex.search(line, 0).group(1)
-                    if check_special_character_regex.search(repr(send), 0) is not None:
-                        send = decode_escapes(send)
-                self.instructions.append(SendInstruction(expect))
+                    send_value = send_regex.search(line, 0).group(1)
+                    send_value = decode_escapes(send_value)
+                self.instructions.append(SendInstruction(send_value))
             elif line.startswith("#"):
                 pass
             else:
-                self.instructions.append(ShellInstruction(line))
+                self.instructions.append(SendShellInstruction(line))
 
     def execute(self):
-        if self.verbosity:
-            print("asciinema rec "+self.outputfile +
-                  " "+self.asciinema_arguments)
+
         self.process = pexpect.spawn(
-            "asciinema rec "+self.outputfile+" "+self.asciinema_arguments)
+            "asciinema rec "+str(self.outputfile)+" "+self.asciinema_arguments)
         # self.process.logfile = sys.stdout.buffer
         self.process.expect("\n")
         self.process.expect("\n")
