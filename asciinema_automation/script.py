@@ -1,12 +1,9 @@
 import codecs
 import pathlib
 import re
-import subprocess
 import time
 import pexpect
-import pexpect.replwrap
-import os
-import sys
+import logging
 from asciinema_automation.instruction import ChangeDelayInstruction, ChangeWaitInstruction, ExpectInstruction, SendInstruction, SendShellInstruction, SendControlInstruction, SendArrowInstruction, SendCharacterInstruction
 
 # To read escaped character from instructions
@@ -114,14 +111,25 @@ class Script:
                 self.instructions.append(SendShellInstruction(line))
 
     def execute(self):
+        spawn_command = "asciinema rec " + \
+            str(self.outputfile) + " "+self.asciinema_arguments
+        logging.info(spawn_command)
+        self.process = pexpect.spawn(spawn_command,
+                                     logfile=None)
 
-        self.process = pexpect.spawn(
-            "asciinema rec "+str(self.outputfile)+" "+self.asciinema_arguments)
-        # self.process.logfile = sys.stdout.buffer
         self.process.expect("\n")
         self.process.expect("\n")
+
+        logging.debug(self.process.before)
+        logging.debug(self.process.after)
+        logging.info("Start reading instructions")
         for instruction in self.instructions:
             time.sleep(self.wait)
             instruction.run(self)
         time.sleep(self.wait)
+        logging.info("Finished reading instructions")
         self.process.sendcontrol('d')
+        self.process.expect(pexpect.EOF)
+        self.process.close()
+        logging.debug("Exit status:"+str(self.process.exitstatus))
+        logging.debug("Signal status:" + str(self.process.signalstatus))

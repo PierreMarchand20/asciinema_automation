@@ -1,6 +1,5 @@
 
 import logging
-import asciinema_automation.script
 import time
 import random
 
@@ -8,7 +7,7 @@ import random
 class Instruction:
 
     def run(self, script):
-        pass
+        logging.info(self.__class__.__name__)
 
 
 class ChangeWaitInstruction(Instruction):
@@ -18,6 +17,7 @@ class ChangeWaitInstruction(Instruction):
 
     def run(self, script):
         super().run(script)
+        logging.debug("%s->%s", script.wait, self.wait)
         script.wait = self.wait
 
 
@@ -28,6 +28,7 @@ class ChangeDelayInstruction(Instruction):
 
     def run(self, script):
         super().run(script)
+        logging.debug("%s->%s", script.delay, self.delay)
         script.delay = self.delay
 
 
@@ -38,6 +39,7 @@ class ExpectInstruction(Instruction):
 
     def run(self, script):
         super().run(script)
+        logging.debug("Expect %s", repr(self.expect_value))
         script.process.expect(self.expect_value)
 
 
@@ -48,6 +50,7 @@ class SendInstruction(Instruction):
 
     def run(self, script):
         super().run(script)
+        logging.debug("Send %s", repr(self.send_value))
 
         # Write intruction
         for character in self.send_value:
@@ -74,6 +77,7 @@ class SendCharacterInstruction(Instruction):
 
     def run(self, script):
         super().run(script)
+        logging.debug("Send '%s'", self.send_value)
         script.process.send(self.send_value)
 
 
@@ -84,6 +88,7 @@ class SendShellInstruction(SendInstruction):
 
     def run(self, script):
         super().run(script)
+        logging.debug("Send '\\n'")
         script.process.send("\n")
 
 
@@ -94,6 +99,7 @@ class SendControlInstruction(Instruction):
 
     def run(self, script):
         super().run(script)
+        logging.debug("Send ctrl+%s", self.control)
         script.process.sendcontrol(self.control)
 
 
@@ -116,6 +122,7 @@ class SendArrowInstruction(Instruction):
 
     def run(self, script):
         super().run(script)
+        logging.debug("Send %s arrow %i times", self.send, self.num)
         for _ in range(self.num):
             if script.standart_deviation is None:
                 time.sleep(script.delay)
