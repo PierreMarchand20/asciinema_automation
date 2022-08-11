@@ -110,7 +110,7 @@ class SendArrowInstruction(Instruction):
     KEY_RIGHT = '\x1b[C'
     KEY_LEFT = '\x1b[D'
 
-    def __init__(self, send, num):
+    def __init__(self, send, num, enter=False):
         super().__init__()
         self.mapping = dict()
         self.mapping["up"] = '\x1b[A'
@@ -119,6 +119,7 @@ class SendArrowInstruction(Instruction):
         self.mapping["left"] = '\x1b[D'
         self.send = send
         self.num = num
+        self.enter = enter
 
     def run(self, script):
         super().run(script)
@@ -129,4 +130,7 @@ class SendArrowInstruction(Instruction):
             else:
                 time.sleep(abs(random.gauss(
                     script.delay, script.standart_deviation)))
-            script.process.sendline(self.mapping[self.send])
+            if self.enter:
+                script.process.sendline(self.mapping[self.send])
+            else:
+                script.process.send(self.mapping[self.send])

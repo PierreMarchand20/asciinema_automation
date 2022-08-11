@@ -1,7 +1,7 @@
 man echo
 #$ expect \r\n:
 
-#$ sendarrow down 5
+#$ sendlinearrow down 5
 
 #$ wait 1000
 #$ sendcharacter q

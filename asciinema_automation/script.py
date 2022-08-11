@@ -58,6 +58,8 @@ class Script:
             r'^#\$ send (.*)(?!\S)')
         arrow_command_regex = re.compile(
             r'^#\$ sendarrow (down|up|left|right)(?:\s([\d]+))?(?!\S)')
+        arrow_sendline_command_regex = re.compile(
+            r'^#\$ sendlinearrow (down|up|left|right)(?:\s([\d]+))?(?!\S)')
 
         # Read script
         with open(inputfile) as f:
@@ -83,8 +85,6 @@ class Script:
                 self.instructions.append(
                     SendCharacterInstruction(sendcharacter_command))
             elif line.startswith("#$ sendarrow"):
-                print(arrow_command_regex.search(
-                    line, 0).groups())
                 arrow_command = arrow_command_regex.search(
                     line, 0).group(1)
                 arrow_num = arrow_command_regex.search(
@@ -92,7 +92,16 @@ class Script:
                 if arrow_num is None:
                     arrow_num = 1
                 self.instructions.append(
-                    SendArrowInstruction(arrow_command, int(arrow_num)))
+                    SendArrowInstruction(arrow_command, int(arrow_num), False))
+            elif line.startswith("#$ sendlinearrow"):
+                arrow_command = arrow_sendline_command_regex.search(
+                    line, 0).group(1)
+                arrow_num = arrow_sendline_command_regex.search(
+                    line, 0).group(2)
+                if arrow_num is None:
+                    arrow_num = 1
+                self.instructions.append(
+                    SendArrowInstruction(arrow_command, int(arrow_num), True))
             elif line.startswith("#$ expect"):
                 expect_value = ""
                 if expect_regex.search(line, 0) is not None:
