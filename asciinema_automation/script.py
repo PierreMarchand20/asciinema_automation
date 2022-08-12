@@ -51,7 +51,7 @@ class Script:
         sendcontrol_command_regex = re.compile(
             r'^#\$ sendcontrol ([a-z])(?!\S)')
         sendcharacter_command_regex = re.compile(
-            r'^#\$ sendcharacter (.)(?!\S)')
+            r'^#\$ sendcharacter (.*)(?!\S)')
         expect_regex = re.compile(
             r'^#\$ expect (.*)(?!\S)')
         send_regex = re.compile(
