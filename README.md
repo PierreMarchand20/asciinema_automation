@@ -8,6 +8,8 @@ Asciinema-Automation is a Python package which provides a small CLI utility to a
 
 This example is generated reading with `asciinema-automation` a script that calls `asciinema-automation` which reads the `hello_world.sh` example in this repository :upside_down_face:
 
+Numerous examples can also be found [here](https://github.com/PierreMarchand20/asciinema_playground).
+
 ## Installation
 
 You need to call `git clone` to recover the source code of this repository
