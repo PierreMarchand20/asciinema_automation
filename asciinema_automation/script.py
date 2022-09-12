@@ -65,6 +65,7 @@ class Script:
         with open(inputfile) as f:
             lines = [line.rstrip() for line in f.readlines() if line.strip()]
 
+        previous_line = ""
         for line in lines:
             if line.startswith("#$ wait"):
                 wait_time = wait_time_regex.search(line, 0).group(1)
@@ -117,7 +118,12 @@ class Script:
             elif line.startswith("#"):
                 pass
             else:
-                self.instructions.append(SendShellInstruction(line))
+                if line.endswith("\\"):
+                    previous_line += line+"\n"
+                else:
+                    self.instructions.append(
+                        SendShellInstruction(previous_line+line))
+                    previous_line = ""
 
     def execute(self):
         spawn_command = "asciinema rec " + \
