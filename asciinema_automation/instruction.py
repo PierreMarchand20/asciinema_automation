@@ -51,16 +51,22 @@ class SendInstruction(Instruction):
     def run(self, script):
         super().run(script)
         logging.debug("Send %s", repr(self.send_value))
+        self.receive_value = self.send_value
+
+        # Check for special character
+        if "\\" in self.send_value:
+            self.receive_value = [character if character !=
+                                  '\\' else character+'\\' for character in list(self.send_value)]
 
         # Write intruction
-        for character in self.send_value:
+        for send_character, receive_character in zip(self.send_value, self.receive_value):
             if script.standart_deviation is None:
                 time.sleep(script.delay)
             else:
                 time.sleep(abs(random.gauss(
                     script.delay, script.standart_deviation)))
-            script.process.send(str(character))
-            script.process.expect(str(character))
+            script.process.send(str(send_character))
+            script.process.expect(str(receive_character))
 
         # End instruction
         if script.standart_deviation is None:
