@@ -8,7 +8,6 @@ jobs:
   build-n-publish:
     name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags')
 
     steps:
       - uses: actions/checkout@v3
@@ -16,6 +15,9 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.x"
+
+      - name: test
+        run: echo "$GITHUB.REF"
 
       - name: Install pypa/build
         run: python -m pip install build --user
