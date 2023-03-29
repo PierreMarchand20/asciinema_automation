@@ -27,7 +27,7 @@ def decode_escapes(s):
 
 class Script:
 
-    def __init__(self, inputfile: pathlib.Path, outputfile: pathlib.Path, asciinema_arguments: str, wait, delay, standart_deviation):
+    def __init__(self, inputfile: pathlib.Path, outputfile: pathlib.Path, asciinema_arguments: str, wait, delay, standart_deviation, timeout):
 
         # Set members from arguments
         self.inputfile = inputfile
@@ -108,7 +108,7 @@ class Script:
                 if expect_regex.search(line, 0) is not None:
                     expect_value = expect_regex.search(line, 0).group(1)
                     expect_value = decode_escapes(expect_value)
-                self.instructions.append(ExpectInstruction(expect_value))
+                self.instructions.append(ExpectInstruction(expect_value, timeout))
             elif line.startswith("#$ send"):
                 send_value = ""
                 if send_regex.search(line, 0) is not None:

@@ -21,7 +21,8 @@ def cli():
                         help="time between each instructions")
     parser.add_argument('-sd', '--standart-deviation', type=int, default=60,
                         help="standart deviation for gaussian used to generate time between key strokes")
-
+    parser.add_argument('-t', '--timeout', type=int, default=30,
+                        help="timeout for a command output to come through")
     group = parser.add_mutually_exclusive_group()
     group.add_argument(
         '-d', '--debug',
@@ -43,6 +44,7 @@ def cli():
     asciinema_arguments = parser.parse_args().asciinema_arguments
     standart_deviation = parser.parse_args().standart_deviation
     loglevel = parser.parse_args().loglevel
+    timeout = parser.parse_args().timeout
 
     # Setup logger
     logfile = None
@@ -53,7 +55,7 @@ def cli():
 
     # Script
     script = Script(inputfile, outputfile, asciinema_arguments,
-                    wait, delay, standart_deviation)
+                    wait, delay, standart_deviation, timeout)
 
     #
     script.execute()
