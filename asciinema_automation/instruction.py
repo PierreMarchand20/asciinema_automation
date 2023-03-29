@@ -33,14 +33,15 @@ class ChangeDelayInstruction(Instruction):
 
 
 class ExpectInstruction(Instruction):
-    def __init__(self, expect_value: str):
+    def __init__(self, expect_value: str, timeout: int):
         super().__init__()
         self.expect_value = expect_value
+        self.timeout = timeout
 
     def run(self, script):
         super().run(script)
         logging.debug("Expect %s", repr(self.expect_value))
-        script.process.expect(self.expect_value)
+        script.process.expect(self.expect_value, timeout=self.timeout)
 
 
 class SendInstruction(Instruction):
