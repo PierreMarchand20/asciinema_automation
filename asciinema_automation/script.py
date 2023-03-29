@@ -108,7 +108,8 @@ class Script:
                 if expect_regex.search(line, 0) is not None:
                     expect_value = expect_regex.search(line, 0).group(1)
                     expect_value = decode_escapes(expect_value)
-                self.instructions.append(ExpectInstruction(expect_value, timeout))
+                self.instructions.append(
+                    ExpectInstruction(expect_value, timeout))
             elif line.startswith("#$ send"):
                 send_value = ""
                 if send_regex.search(line, 0) is not None:
@@ -133,18 +134,24 @@ class Script:
                                      logfile=None)
 
         self.process.expect("\n")
-        self.process.expect("\n")
-
         logging.debug(self.process.before)
-        logging.debug(self.process.after)
-        logging.info("Start reading instructions")
-        for instruction in self.instructions:
+        if not ("recording asciicast to test.cast" in str(self.process.before)):
+            self.process.expect(pexpect.EOF)
+            self.process.close()
+            logging.debug("Exit status:"+str(self.process.exitstatus))
+            logging.debug("Signal status:" + str(self.process.signalstatus))
+        else:
+            self.process.expect("\n")
+            logging.debug(self.process.before)
+            logging.debug(self.process.after)
+            logging.info("Start reading instructions")
+            for instruction in self.instructions:
+                time.sleep(self.wait)
+                instruction.run(self)
             time.sleep(self.wait)
-            instruction.run(self)
-        time.sleep(self.wait)
-        logging.info("Finished reading instructions")
-        self.process.sendcontrol('d')
-        self.process.expect(pexpect.EOF)
-        self.process.close()
-        logging.debug("Exit status:"+str(self.process.exitstatus))
-        logging.debug("Signal status:" + str(self.process.signalstatus))
+            logging.info("Finished reading instructions")
+            self.process.sendcontrol('d')
+            self.process.expect(pexpect.EOF)
+            self.process.close()
+            logging.debug("Exit status:"+str(self.process.exitstatus))
+            logging.debug("Signal status:" + str(self.process.signalstatus))
