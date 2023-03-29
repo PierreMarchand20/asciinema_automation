@@ -1,6 +1,9 @@
 asciinema-automation
 ####################
 
+.. image:: https://badge.fury.io/py/asciinema-automation.svg
+    :target: https://badge.fury.io/py/asciinema-automation
+
 Asciinema-Automation is a Python package which provides a small CLI utility to automate `asciinema <https://asciinema.org>`_ recordings. The only dependencies are asciinema and `Pexpect <https://pexpect.readthedocs.io/>`_.
 
 Example
@@ -16,7 +19,13 @@ Numerous examples can also be found `here <https://github.com/PierreMarchand20/a
 Installation
 ------------
 
-You need to call ``git clone`` to recover the source code of this repository
+You can use `pip <https://pip.pypa.io/en/stable/>`_ to install:
+
+.. code:: bash
+    
+    python3 -m pip install asciinema-automation
+
+Or you can install it directly using this GitHub repository. In this case, you need to call ``git clone`` to recover the source code of this repository
 
 .. code:: bash
     
