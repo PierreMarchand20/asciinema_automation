@@ -1,5 +1,6 @@
 import logging
 import random
+import re
 import time
 
 logger = logging.getLogger(__name__)
@@ -55,11 +56,7 @@ class SendInstruction(Instruction):
         self.receive_value = self.send_value
 
         # Check for special character
-        if "\\" in self.send_value:
-            self.receive_value = [
-                character if character != "\\" else character + "\\"
-                for character in list(self.send_value)
-            ]
+        self.receive_value = [re.escape(c) for c in list(self.send_value)]
 
         # Write intruction
         for send_character, receive_character in zip(
