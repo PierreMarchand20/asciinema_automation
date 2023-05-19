@@ -1,0 +1,49 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  test: 
+    name: Test Python package
+    runs-on: ubuntu-latest
+    container:
+      image: pierremarchand/asciinema_playground
+      options: --user root
+
+    steps:
+        - uses: actions/checkout@v3
+        - name: Set up Python
+          uses: actions/setup-python@v4
+          with:
+            python-version: "3.x"
+
+        - name: Set up Python package
+          run: |
+            python -m pip install --upgrade pip
+            python -m pip install .[test]
+
+        - name: Run regression tests
+          run: |
+            pytest
+
+        - name: Check module imports with isort
+          run: |
+            python -m pip install isort
+            python -m isort . --check-only --diff
+        #   uses: isort/isort-action@master
+
+        - name: Check formatting with black
+          uses: psf/black@stable
+
+        - name: Check building a binary wheel and a source tarball
+          run: |
+            python -m pip install twine build --user
+            python -m build --sdist --wheel --outdir dist/ .
+            python -m twine check dist/*

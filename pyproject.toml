@@ -30,3 +30,9 @@ test = ["pytest"]
 
 [project.scripts]
 asciinema-automation="asciinema_automation.cli:cli"
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"

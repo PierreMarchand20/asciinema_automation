@@ -1,0 +1,31 @@
+[?2004h$ man echo
+[?2004l[?1049h[22;0;0t[?1h=ECHO(1)                          User Commands                         ECHO(1)[m
+[m
+[1mNAME[0m[m
+       echo - display a line of text[m
+[m
+[1mSYNOPSIS[0m[m
+       [1mecho[0m [[4mSHORT-OPTION[24m]... [[4mSTRING[24m]...[m
+       [1mecho[0m [4mLONG-OPTION[24m[m
+[m
+[1mDESCRIPTION[0m[m
+       Echo the STRING(s) to standard output.[m
+[m
+       [1m-n[0m     do not output the trailing newline[m
+[m
+       [1m-e[0m     enable interpretation of backslash escapes[m
+[m
+       [1m-E[0m     disable interpretation of backslash escapes (default)[m
+[m
+       [1m--help[0m display this help and exit[m
+[m
+       [1m--version[0m[m
+              output version information and exit[m
+[m
+[7m Manual page echo(1) line 1 (press h for help or q to quit)[27m[K[K [KESCESC[K[[[KBB[K[7m Manual page echo(1) line 1 (press h for help or q to quit)[27m[K[K       If [1m-e[0m is in effect, the following sequences are recognized:[m
+[7m Manual page echo(1) line 2 (press h for help or q to quit)[27m[K[K [KESCESC[K[[[KBB[K[7m Manual page echo(1) line 2 (press h for help or q to quit)[27m[K[K[m
+[7m Manual page echo(1) line 3 (press h for help or q to quit)[27m[K[K [KESCESC[K[[[KBB[K[7m Manual page echo(1) line 3 (press h for help or q to quit)[27m[K[K       \\     backslash[m
+[7m Manual page echo(1) line 4 (press h for help or q to quit)[27m[K[K [KESCESC[K[[[KBB[K[7m Manual page echo(1) line 4 (press h for help or q to quit)[27m[K[K[m
+[7m Manual page echo(1) line 5 (press h for help or q to quit)[27m[K[K [KESCESC[K[[[KBB[K[7m Manual page echo(1) line 5 (press h for help or q to quit)[27m[K[K       \a     alert (BEL)[m
+[7m Manual page echo(1) line 6 (press h for help or q to quit)[27m[K[K[?1l>[?1049l[23;0;0t[?2004h$ [?2004l
+exit

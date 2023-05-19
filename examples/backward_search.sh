@@ -1,29 +1,31 @@
+#$ delay 50
+
 touch my_first_file.txt
-#$ expect \r\n
+#$ expect \$
 
 touch my_second_file.txt
-#$ expect \r\n
+#$ expect \$
 
 rm my_first_file.txt
-#$ expect \r\n
+#$ expect \$
 
 #$ sendcontrol r
 
 #$ delay 500
 
-#$ send tou
-#$ expect my_second_file.txt
+#$ send touch
+#$ expect second
 
 #$ wait 1000
 
 #$ sendcontrol r
-#$ expect first_file.txt
+#$ expect first
 
 #$ sendcontrol m
-#$ wait 80
-#$ delay 150
-#$ expect \n
+#$ expect \$
 
+#$ wait 80
+#$ delay 50
 
 ls my_first_file.txt
-#$ expect first_file.txt
+#$ expect \$
