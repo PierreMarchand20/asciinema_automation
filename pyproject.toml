@@ -1,0 +1,32 @@
+[project]
+name = "asciinema-automation"
+version = "0.1.2"
+authors = [
+  { name="Pierre Marchand", email="test@test.com" },
+]
+description = "CLI utility to automate asciinema"
+readme = {file = "README.rst", content-type = "text/x-rst"}
+requires-python = ">=3.7"
+license = {text = "MIT License"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: MacOS",
+    "Operating System :: Unix"
+]
+keywords = ["asciinema"]
+dependencies = [
+    "pexpect>=4.8.0",
+    "asciinema>=2.2.0"
+]
+
+[project.optional-dependencies]
+dev  = ["black", "bumpver", "isort", "pytest"]
+test = ["pytest"]
+
+[project.urls]
+"Homepage" = "https://github.com/PierreMarchand20/asciinema_automation"
+"Bug Tracker" = "https://github.com/PierreMarchand20/asciinema_automation/issues"
+
+[project.scripts]
+asciinema-automation="asciinema_automation.cli:cli"
