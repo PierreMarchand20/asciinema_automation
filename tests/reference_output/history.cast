@@ -1,0 +1,8 @@
+[?2004h$ touch my_first_file.txt
+[?2004l[?2004h$ touch my_second_file.txt
+[?2004l[?2004h$ rm my_first_file.txt
+[?2004l[?2004h$ rm my_first_file.txt$ [4@touch my_second_file.txt$ touch my_[1Pfirst_file.txt
+[?2004l[?2004h$ ls
+[?2004lmy_first_file.txt  my_second_file.txt
+[?2004h$ [?2004l
+exit

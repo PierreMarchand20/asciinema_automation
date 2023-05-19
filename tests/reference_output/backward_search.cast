@@ -1,0 +1,8 @@
+[?2004h$ touch my_first_file.txt
+[?2004l[?2004h$ touch my_second_file.txt
+[?2004l[?2004h$ rm my_first_file.txt
+[?2004l[?2004h$ (reverse-i-search)`': t': rm my_first_file.tx[7mt[27m(reverse-i-search)`to': [7mto[27much my_second_file.txt[1@u': [7mtou[27m[1@c': [7mtouc[27m[1@h': [7mtouch[27m[7mtouch[27m my_[1Pfirst[25P$ touch$ 
+[?2004l[?2004h$ ls my_first_file.txt
+[?2004lmy_first_file.txt
+[?2004h$ [?2004l
+exit

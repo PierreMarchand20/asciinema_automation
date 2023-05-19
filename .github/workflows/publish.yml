@@ -20,9 +20,6 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: test
-        run: echo "$GITHUB.REF"
-
       - name: Install pypa/build
         run: python -m pip install build --user
 

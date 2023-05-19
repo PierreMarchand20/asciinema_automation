@@ -1,0 +1,8 @@
+[?2004h$ echo "Hello world"
+[?2004lHello world
+[?2004h$ echo "I have waited 1000ms"
+[?2004lI have waited 1000ms
+[?2004h$ echo "I am writing with a 10ms delay"
+[?2004lI am writing with a 10ms delay
+[?2004h$ [?2004l
+exit

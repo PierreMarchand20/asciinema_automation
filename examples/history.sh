@@ -1,13 +1,26 @@
+#$ delay 50
+
 touch my_first_file.txt
-#$ expect \r\n
+#$ expect \$
 
 touch my_second_file.txt
-#$ expect \r\n
+#$ expect \$
 
 rm my_first_file.txt
-#$ expect \r\n
+#$ expect \$
 
-#$ delay 1000 
-#$ sendarrow up 3
+#$ delay 800
+
+#$ sendarrow up 2
+#$ expect touch my_second_file.txt
+
+#$ sendarrow up
 #$ expect first_file.txt
-#$ wait 1000 
+
+#$ delay 10
+
+#$ sendcontrol m
+#$ expect \$
+
+ls
+#$ expect \$

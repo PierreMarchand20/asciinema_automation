@@ -1,0 +1,13 @@
+[?2004h$ asciinema rec temp_test.cast \
+[?2004l[?2004h>     --overwrite \
+[?2004l[?2004h>     -c 'env -i PS1=$ bash --noprofile --norc' \
+[?2004l[?2004h>     -q
+[?2004l$echo "Hello World"
+Hello World
+$exit
+[?2004h$ asciinema play temp_test.cast
+[?2004l$echo "Hello World"
+Hello World
+$exit
+[?2004h$ [?2004l
+exit

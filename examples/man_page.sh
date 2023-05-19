@@ -1,8 +1,10 @@
+
 man echo
-#$ expect \r\n:
+#$ expect quit
 
 #$ sendlinearrow down 5
 
 #$ wait 1000
 #$ sendcharacter q
-#$ expect bash
+#$ wait 80
+#$ expect \$
