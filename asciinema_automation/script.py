@@ -31,6 +31,8 @@ ESCAPE_SEQUENCE_RE = re.compile(
     re.UNICODE | re.VERBOSE,
 )
 
+logger = logging.getLogger(__name__)
+
 
 def decode_escapes(s):
     def decode_match(match):
@@ -143,30 +145,30 @@ class Script:
         spawn_command = (
             "asciinema rec " + str(self.outputfile) + " " + self.asciinema_arguments
         )
-        logging.info(spawn_command)
+        logger.info(spawn_command)
         self.process = pexpect.spawn(spawn_command, logfile=None)
 
         self.process.expect("\n")
-        logging.debug(self.process.before)
+        logger.debug(self.process.before)
         if not (
             "recording asciicast to " + str(self.outputfile) in str(self.process.before)
         ):
             self.process.expect(pexpect.EOF)
             self.process.close()
-            logging.debug("Exit status:" + str(self.process.exitstatus))
-            logging.debug("Signal status:" + str(self.process.signalstatus))
+            logger.debug("Exit status:" + str(self.process.exitstatus))
+            logger.debug("Signal status:" + str(self.process.signalstatus))
         else:
             self.process.expect("\n")
-            logging.debug(self.process.before)
-            logging.debug(self.process.after)
-            logging.info("Start reading instructions")
+            logger.debug(self.process.before)
+            logger.debug(self.process.after)
+            logger.info("Start reading instructions")
             for instruction in self.instructions:
                 time.sleep(self.wait)
                 instruction.run(self)
             time.sleep(self.wait)
-            logging.info("Finished reading instructions")
+            logger.info("Finished reading instructions")
             self.process.sendcontrol("d")
             self.process.expect(pexpect.EOF)
             self.process.close()
-            logging.debug("Exit status:" + str(self.process.exitstatus))
-            logging.debug("Signal status:" + str(self.process.signalstatus))
+            logger.debug("Exit status:" + str(self.process.exitstatus))
+            logger.debug("Signal status:" + str(self.process.signalstatus))

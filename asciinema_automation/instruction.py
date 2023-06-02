@@ -2,10 +2,12 @@ import logging
 import random
 import time
 
+logger = logging.getLogger(__name__)
+
 
 class Instruction:
     def run(self, script):
-        logging.info(self.__class__.__name__)
+        logger.info(self.__class__.__name__)
 
 
 class ChangeWaitInstruction(Instruction):
@@ -15,7 +17,7 @@ class ChangeWaitInstruction(Instruction):
 
     def run(self, script):
         super().run(script)
-        logging.debug("%s->%s", script.wait, self.wait)
+        logger.debug("%s->%s", script.wait, self.wait)
         script.wait = self.wait
 
 
@@ -26,7 +28,7 @@ class ChangeDelayInstruction(Instruction):
 
     def run(self, script):
         super().run(script)
-        logging.debug("%s->%s", script.delay, self.delay)
+        logger.debug("%s->%s", script.delay, self.delay)
         script.delay = self.delay
 
 
@@ -38,7 +40,7 @@ class ExpectInstruction(Instruction):
 
     def run(self, script):
         super().run(script)
-        logging.debug("Expect %s", repr(self.expect_value))
+        logger.debug("Expect %s", repr(self.expect_value))
         script.process.expect(self.expect_value, timeout=self.timeout)
 
 
@@ -49,7 +51,7 @@ class SendInstruction(Instruction):
 
     def run(self, script):
         super().run(script)
-        logging.debug("Send %s", repr(self.send_value))
+        logger.debug("Send %s", repr(self.send_value))
         self.receive_value = self.send_value
 
         # Check for special character
@@ -84,7 +86,7 @@ class SendCharacterInstruction(Instruction):
 
     def run(self, script):
         super().run(script)
-        logging.debug("Send '%s'", self.send_value)
+        logger.debug("Send '%s'", self.send_value)
         script.process.send(self.send_value)
 
 
@@ -94,7 +96,7 @@ class SendShellInstruction(SendInstruction):
 
     def run(self, script):
         super().run(script)
-        logging.debug("Send '\\n'")
+        logger.debug("Send '\\n'")
         script.process.send("\n")
 
 
@@ -105,7 +107,7 @@ class SendControlInstruction(Instruction):
 
     def run(self, script):
         super().run(script)
-        logging.debug("Send ctrl+%s", self.control)
+        logger.debug("Send ctrl+%s", self.control)
         script.process.sendcontrol(self.control)
 
 
@@ -128,7 +130,7 @@ class SendArrowInstruction(Instruction):
 
     def run(self, script):
         super().run(script)
-        logging.debug("Send %s arrow %i times", self.send, self.num)
+        logger.debug("Send %s arrow %i times", self.send, self.num)
         for _ in range(self.num):
             if script.standart_deviation is None:
                 time.sleep(script.delay)
