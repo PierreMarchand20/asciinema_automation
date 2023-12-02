@@ -49,7 +49,7 @@ class Script:
         asciinema_arguments: str,
         wait,
         delay,
-        standart_deviation,
+        standard_deviation,
         timeout,
     ):
         # Set members from arguments
@@ -58,7 +58,7 @@ class Script:
         self.asciinema_arguments = asciinema_arguments
         self.delay = delay / 1000.0
         self.wait = wait / 1000.0
-        self.standart_deviation = standart_deviation / 1000.0
+        self.standard_deviation = standard_deviation / 1000.0
 
         # Default values for data members
         self.expected = "\n"

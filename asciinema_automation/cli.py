@@ -32,10 +32,10 @@ def cli(argv=None):
     )
     parser.add_argument(
         "-sd",
-        "--standart-deviation",
+        "--standard-deviation",
         type=int,
         default=60,
-        help="standart deviation for gaussian used to generate time between key strokes",
+        help="standard deviation for gaussian used to generate time between key strokes",
     )
     parser.add_argument(
         "-t",
@@ -70,7 +70,7 @@ def cli(argv=None):
     delay = args.delay
     wait = args.wait
     asciinema_arguments = args.asciinema_arguments
-    standart_deviation = args.standart_deviation
+    standard_deviation = args.standard_deviation
     loglevel = args.loglevel
     timeout = args.timeout
 
@@ -87,7 +87,7 @@ def cli(argv=None):
         asciinema_arguments,
         wait,
         delay,
-        standart_deviation,
+        standard_deviation,
         timeout,
     )
 
