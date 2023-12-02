@@ -62,18 +62,18 @@ class SendInstruction(Instruction):
         for send_character, receive_character in zip(
             self.send_value, self.receive_value
         ):
-            if script.standart_deviation is None:
+            if script.standard_deviation is None:
                 time.sleep(script.delay)
             else:
-                time.sleep(abs(random.gauss(script.delay, script.standart_deviation)))
+                time.sleep(abs(random.gauss(script.delay, script.standard_deviation)))
             script.process.send(str(send_character))
             script.process.expect(str(receive_character))
 
         # End instruction
-        if script.standart_deviation is None:
+        if script.standard_deviation is None:
             time.sleep(script.delay)
         else:
-            time.sleep(abs(random.gauss(script.delay, script.standart_deviation)))
+            time.sleep(abs(random.gauss(script.delay, script.standard_deviation)))
 
 
 class SendCharacterInstruction(Instruction):
@@ -129,10 +129,10 @@ class SendArrowInstruction(Instruction):
         super().run(script)
         logger.debug("Send %s arrow %i times", self.send, self.num)
         for _ in range(self.num):
-            if script.standart_deviation is None:
+            if script.standard_deviation is None:
                 time.sleep(script.delay)
             else:
-                time.sleep(abs(random.gauss(script.delay, script.standart_deviation)))
+                time.sleep(abs(random.gauss(script.delay, script.standard_deviation)))
             if self.enter:
                 script.process.sendline(self.mapping[self.send])
             else:

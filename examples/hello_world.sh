@@ -1,4 +1,4 @@
-# delay instructions change the time (or mean of gaussian if standart deviation is given) between key strokes
+# delay instructions change the time (or mean of gaussian if standard deviation is given) between key strokes
 #$ delay 50
 
 echo "Hello world"
