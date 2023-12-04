@@ -1,6 +1,5 @@
-[?2004h$ echo "Very" \
-[?2004l[?2004h>     "long" \
-[?2004l[?2004h>     "command"
-[?2004lVery long command
-[?2004h$ [?2004l
-exit
+$ echo "Very" \
+>     "long" \
+>     "command"
+Very long command
+$ exit

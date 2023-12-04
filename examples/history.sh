@@ -11,7 +11,10 @@ rm my_first_file.txt
 
 #$ delay 800
 
-#$ sendarrow up 2
+#$ sendarrow up 1
+#$ expect rm my_first_file.txt
+
+#$ sendarrow up 1
 #$ expect touch my_second_file.txt
 
 #$ sendarrow up

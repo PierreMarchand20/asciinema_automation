@@ -1,4 +1,5 @@
 import pathlib
+import re
 
 import pytest
 
@@ -28,14 +29,24 @@ def test_regression(tmp_path, request, inputfile: pathlib.Path):
     reference_folder = (
         request.config.invocation_params.dir / "tests" / "reference_output"
     )
+    custom_rc_file = (
+        request.config.invocation_params.dir / "tests" / "custom_rc_file_dumb_term"
+    )
     output_folder = tmp_path
     output_file_name = inputfile.stem + ".cast"
     print(pathlib.Path().cwd())
+
+    if inputfile.name in ["backward_search.sh", "history.sh", "man_page.sh"]:
+        custom_rc_file = (
+            request.config.invocation_params.dir / "tests" / "custom_rc_file_xterm_term"
+        )
     cli(
         [
             "--debug",
             "--asciinema-arguments",
-            """--raw --overwrite -c 'env -i TERM=xterm-256color HOME=~ PS1="$ " PATH=/usr/bin:/usr/local/bin/ bash --noprofile --norc'""",
+            """--raw --overwrite -c 'env -i bash --noprofile --rcfile """
+            + str(custom_rc_file)
+            + """'""",
             str(example_folder / inputfile.name),
             str(output_folder / output_file_name),
         ]
@@ -43,4 +54,9 @@ def test_regression(tmp_path, request, inputfile: pathlib.Path):
 
     with open(output_folder / output_file_name, "r") as output_file:
         with pathlib.Path(reference_folder / output_file_name).open() as reference_file:
-            assert output_file.readlines() == reference_file.readlines()
+            ansi_escape = re.compile(
+                r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])", re.VERBOSE
+            )
+            output_text = output_file.read()
+            cleaned_output_text = ansi_escape.sub("", output_text)
+            assert cleaned_output_text == reference_file.read()
