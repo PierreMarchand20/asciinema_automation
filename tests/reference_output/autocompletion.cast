@@ -1,6 +1,5 @@
-[?2004h$ mkdir my_folder_with_a_very_long_name
-[?2004l[?2004h$ cd my_folder_with_a_very_long_name/
-[?2004l[?2004h$ basename $PWD
-[?2004lmy_folder_with_a_very_long_name
-[?2004h$ [?2004l
-exit
+$ mkdir my_folder_with_a_very_long_name
+$ cd my_folder_with_a_very_long_name/
+$ basename $PWD
+my_folder_with_a_very_long_name
+$ exit

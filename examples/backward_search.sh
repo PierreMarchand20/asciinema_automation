@@ -14,7 +14,7 @@ rm my_first_file.txt
 #$ delay 500
 
 #$ send touch
-#$ expect second
+#$ expect second_file.txt
 
 #$ wait 1000
 

@@ -1,14 +1,13 @@
-[?2004h$ mkdir my_directory
-[?2004l[?2004h$ cd my_directory
-[?2004l[?2004h$ basename $PWD
-[?2004lmy_directory
-[?2004h$ touch my_textfile.txt
-[?2004l[?2004h$ ls
-[?2004lmy_textfile.txt
-[?2004h$ rm my_textfile.txt
-[?2004l[?2004h$ ls
-[?2004l[?2004h$ cd ..
-[?2004l[?2004h$ rm -r my_directory
-[?2004l[?2004h$ ls
-[?2004l[?2004h$ [?2004l
-exit
+$ mkdir my_directory
+$ cd my_directory
+$ basename $PWD
+my_directory
+$ touch my_textfile.txt
+$ ls
+my_textfile.txt
+$ rm my_textfile.txt
+$ ls
+$ cd ..
+$ rm -r my_directory
+$ ls
+$ exit
