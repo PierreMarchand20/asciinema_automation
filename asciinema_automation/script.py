@@ -151,7 +151,9 @@ class Script:
         self.process.expect("\n")
         logger.debug(self.process.before)
         if not (
-            "recording asciicast to " + str(self.outputfile) in str(self.process.before)
+            f"recording asciicast to {self.outputfile}" in str(self.process.before)
+            or f"appending to asciicast at {self.outputfile}"
+            in str(self.process.before)
         ):
             self.process.expect(pexpect.EOF)
             self.process.close()
