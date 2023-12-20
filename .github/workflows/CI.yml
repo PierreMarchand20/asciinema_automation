@@ -28,7 +28,7 @@ jobs:
         - name: Run regression tests
           run: |
             set enable-bracketed-paste off
-            python3 -m pytest
+            python3 -m pytest -v
 
         - name: Check module imports with isort
           run: |
