@@ -51,6 +51,7 @@ class Script:
         delay,
         standard_deviation,
         timeout,
+        delaybeforesend=50 / 1000.0,
     ):
         # Set members from arguments
         self.inputfile = inputfile
@@ -59,6 +60,7 @@ class Script:
         self.delay = delay / 1000.0
         self.wait = wait / 1000.0
         self.standard_deviation = standard_deviation / 1000.0
+        self.delaybeforesend = delaybeforesend
 
         # Default values for data members
         self.expected = "\n"
@@ -147,6 +149,7 @@ class Script:
         )
         logger.info(spawn_command)
         self.process = pexpect.spawn(spawn_command, logfile=None)
+        self.process.delaybeforesend = self.delaybeforesend
 
         self.process.expect("\n")
         logger.debug(self.process.before)
