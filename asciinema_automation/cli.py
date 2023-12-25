@@ -1,11 +1,13 @@
 import argparse
 import logging
 import pathlib
+from typing import List, Optional
 
+from asciinema_automation import parse
 from asciinema_automation.script import Script
 
 
-def cli(argv=None):
+def cli(argv: Optional[List[str]] = None) -> None:
     # Command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -35,7 +37,8 @@ def cli(argv=None):
         "--standard-deviation",
         type=int,
         default=60,
-        help="standard deviation for gaussian used to generate time between key strokes",
+        help="""standard deviation for gaussian used to 
+        generate time between key strokes""",
     )
     parser.add_argument(
         "-t",
@@ -48,7 +51,8 @@ def cli(argv=None):
     group.add_argument(
         "-d",
         "--debug",
-        help="set loglevel to DEBUG and output to 'outputfile.log'. Default loglevel to ERROR.",
+        help="""set loglevel to DEBUG 
+        and output to 'outputfile.log'. Default loglevel to ERROR.""",
         action="store_const",
         dest="loglevel",
         const=logging.DEBUG,
@@ -57,7 +61,8 @@ def cli(argv=None):
     group.add_argument(
         "-v",
         "--verbose",
-        help="set loglevel to INFO and output to 'outputfile.log'. Default loglevel to ERROR.",
+        help="""set loglevel to INFO and output to 'outputfile.log'. 
+        Default loglevel to ERROR.""",
         action="store_const",
         dest="loglevel",
         const=logging.INFO,
@@ -82,13 +87,12 @@ def cli(argv=None):
 
     # Script
     script = Script(
-        inputfile,
         outputfile,
         asciinema_arguments,
-        wait,
-        delay,
-        standard_deviation,
-        timeout,
+        wait / 1000,
+        delay / 1000,
+        standard_deviation / 1000,
+        parse.parse_script_file(inputfile, timeout),
     )
 
     #

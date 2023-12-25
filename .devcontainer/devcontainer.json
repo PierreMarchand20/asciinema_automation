@@ -19,8 +19,9 @@
 			"extensions": [
 				"ms-python.python",
 				"ms-python.vscode-pylance",
-				"ms-python.black-formatter",
-				"ms-python.isort"
+				"charliermarsh.ruff",
+				"ms-python.mypy-type-checker",
+				"tamasfe.even-better-toml"
 			]
 		}
 	},
