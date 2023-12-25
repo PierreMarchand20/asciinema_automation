@@ -2,6 +2,7 @@ import pathlib
 import re
 
 import pytest
+from pytest import FixtureRequest, MonkeyPatch
 
 from asciinema_automation.cli import cli
 
@@ -13,7 +14,7 @@ if not path_to_example_folder.is_dir():
 
 
 @pytest.fixture(autouse=True)
-def change_test_directory(tmp_path, monkeypatch) -> None:
+def change_test_directory(tmp_path: pathlib.Path, monkeypatch: MonkeyPatch) -> None:
     pathlib.Path.mkdir(pathlib.Path(tmp_path / "tmp"), exist_ok=True)
     monkeypatch.chdir(tmp_path / "tmp")
 
@@ -24,7 +25,9 @@ def change_test_directory(tmp_path, monkeypatch) -> None:
     path_to_example_folder.iterdir(),
     ids=[example.name for example in path_to_example_folder.iterdir()],
 )
-def test_regression(tmp_path, request, inputfile: pathlib.Path):
+def test_regression(
+    tmp_path: pathlib.Path, request: FixtureRequest, inputfile: pathlib.Path
+) -> None:
     example_folder = request.config.invocation_params.dir / "examples"
     reference_folder = (
         request.config.invocation_params.dir / "tests" / "reference_output"
@@ -52,11 +55,10 @@ def test_regression(tmp_path, request, inputfile: pathlib.Path):
         ]
     )
 
-    with open(output_folder / output_file_name, "r") as output_file:
-        with pathlib.Path(reference_folder / output_file_name).open() as reference_file:
-            ansi_escape = re.compile(
-                r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])", re.VERBOSE
-            )
-            output_text = output_file.read()
-            cleaned_output_text = ansi_escape.sub("", output_text)
-            assert cleaned_output_text == reference_file.read()
+    with open(output_folder / output_file_name) as output_file, pathlib.Path(
+        reference_folder / output_file_name
+    ).open() as reference_file:
+        ansi_escape = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])", re.VERBOSE)
+        output_text = output_file.read()
+        cleaned_output_text = ansi_escape.sub("", output_text)
+        assert cleaned_output_text == reference_file.read()

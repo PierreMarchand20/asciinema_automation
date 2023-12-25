@@ -19,25 +19,24 @@ jobs:
 
     steps:
         - uses: actions/checkout@v3
-        
+
         - name: Set up Python package
           run: |
             python3 -m pip install --upgrade pip
-            python3 -m pip install .[test]
+            python3 -m pip install .[dev]
 
         - name: Run regression tests
           run: |
             set enable-bracketed-paste off
             python3 -m pytest -v
 
-        - name: Check module imports with isort
+        - name: Check with ruff
           run: |
-            python3 -m pip install isort
-            python3 -m isort . --check-only --diff
-        #   uses: isort/isort-action@master
+            ruff asciinema_automation/ tests/
 
-        - name: Check formatting with black
-          uses: psf/black@stable
+        - name: Check with mypy
+          run: |
+            mypy asciinema_automation/ tests/
 
         - name: Check building a binary wheel and a source tarball
           run: |
