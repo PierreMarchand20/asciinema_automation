@@ -1,5 +1,6 @@
 import pathlib
 import re
+import shutil
 
 import pytest
 from pytest import FixtureRequest, MonkeyPatch
@@ -43,6 +44,10 @@ def test_regression(
         custom_rc_file = (
             request.config.invocation_params.dir / "tests" / "custom_rc_file_xterm_term"
         )
+
+    if inputfile.name in ["asciinema_automation_hello_world.sh"]:
+        shutil.copy(example_folder / "hello_world.sh", tmp_path / "tmp")
+
     cli(
         [
             "--debug",
