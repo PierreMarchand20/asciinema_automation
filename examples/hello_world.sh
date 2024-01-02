@@ -1,13 +1,13 @@
-# delay instructions change the time (or mean of gaussian if standard deviation is given) between key strokes
-#$ delay 50
+# mean of gaussian delay between key strokes, default to 50ms
+#$ delay 150
 
 echo "Hello world"
 #$ expect \$
 
-# wait instructions change the time between instructions
+# wait instructions change the time between instructions, default to 80ms
 #$ wait 1000
 
-echo "I have waited 1000ms"
+echo "I now wait 1000ms"
 #$ expect \$
 
 #$ delay 10

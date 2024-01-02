@@ -1,7 +1,7 @@
 $ echo "Hello world"
 Hello world
-$ echo "I have waited 1000ms"
-I have waited 1000ms
+$ echo "I now wait 1000ms"
+I now wait 1000ms
 $ echo "I am writing with a 10ms delay"
 I am writing with a 10ms delay
 $ exit

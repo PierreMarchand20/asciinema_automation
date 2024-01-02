@@ -21,7 +21,7 @@ class Script:
     delay: float
     standard_deviation: float
     instructions: list[Instruction]
-    delaybeforesend: float = 50 / 1000.0
+    delaybeforesend: float | None = None
 
     def execute(self) -> None:
         spawn_command = (
@@ -29,7 +29,7 @@ class Script:
         )
         logger.info(spawn_command)
         self.process = pexpect.spawn(spawn_command, logfile=None)
-        self.process.delaybeforesend = self.delaybeforesend
+        self.process.delaybeforesend = self.delaybeforesend  # type: ignore
 
         self.process.expect("\n")
         logger.debug(self.process.before)
