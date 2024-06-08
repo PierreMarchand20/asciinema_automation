@@ -17,6 +17,7 @@ class Instruction:
 class Script:
     outputfile: pathlib.Path
     asciinema_arguments: str
+    timeout: float
     wait: float
     delay: float
     standard_deviation: float
@@ -28,7 +29,7 @@ class Script:
             "asciinema rec " + str(self.outputfile) + " " + self.asciinema_arguments
         )
         logger.info(spawn_command)
-        self.process = pexpect.spawn(spawn_command, logfile=None)
+        self.process = pexpect.spawn(spawn_command, timeout=self.timeout, logfile=None)
         self.process.delaybeforesend = self.delaybeforesend  # type: ignore
 
         self.process.expect("\n")

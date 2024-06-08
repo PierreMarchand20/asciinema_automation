@@ -89,6 +89,7 @@ def cli(argv: Optional[List[str]] = None) -> None:
     script = Script(
         outputfile,
         asciinema_arguments,
+        timeout,
         wait / 1000,
         delay / 1000,
         standard_deviation / 1000,
