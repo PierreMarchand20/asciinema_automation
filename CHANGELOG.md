@@ -24,6 +24,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.2.1 - 2024-06-09
+
+### Fixed
+
+- Fix timeout issue in PR #16 thanks to @chrda81.
+
 ## 0.2.0 - 2023-12-25
 
 ### Added
