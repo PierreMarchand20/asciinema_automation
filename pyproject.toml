@@ -1,6 +1,6 @@
 [project]
 name = "asciinema-automation"
-version = "0.2.0"
+version = "0.2.1"
 authors = [{ name = "Pierre Marchand", email = "test@test.com" }]
 description = "CLI utility to automate asciinema"
 readme = { file = "README.rst", content-type = "text/x-rst" }
