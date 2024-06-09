@@ -30,7 +30,7 @@ class Script:
         )
         logger.info(spawn_command)
         self.process = pexpect.spawn(spawn_command, timeout=self.timeout, logfile=None)
-        self.process.delaybeforesend = self.delaybeforesend  # type: ignore
+        self.process.delaybeforesend = self.delaybeforesend
 
         self.process.expect("\n")
         logger.debug(self.process.before)
