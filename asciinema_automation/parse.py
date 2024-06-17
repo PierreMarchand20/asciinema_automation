@@ -43,7 +43,7 @@ def parse_script_file(inputfile: pathlib.Path, timeout: int) -> list["Instructio
     # Compile regex
     wait_time_regex = re.compile(r"^#\$ wait (\d*)(?!\S)")
     delay_time_regex = re.compile(r"^#\$ delay (\d*)(?!\S)")
-    sendcontrol_command_regex = re.compile(r"^#\$ sendcontrol ([a-z])(?!\S)")
+    sendcontrol_command_regex = re.compile(r"^#\$ sendcontrol (.)(?!\S)")
     sendcharacter_command_regex = re.compile(r"^#\$ sendcharacter (.*)(?!\S)")
     expect_regex = re.compile(r"^#\$ expect (.*)(?!\S)")
     send_regex = re.compile(r"^#\$ send (.*)(?!\S)")
