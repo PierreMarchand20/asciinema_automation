@@ -32,7 +32,7 @@ jobs:
 
         - name: Check with ruff
           run: |
-            ruff asciinema_automation/ tests/
+            ruff check asciinema_automation/ tests/
 
         - name: Check with mypy
           run: |
