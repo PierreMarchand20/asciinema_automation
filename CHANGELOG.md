@@ -24,6 +24,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.2.2 - 2024-07-11
+
+### Added
+
+- Accept non-alphabetical control character PR #17 thanks to @dashohoxha
+
 ## 0.2.1 - 2024-06-09
 
 ### Fixed
