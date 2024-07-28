@@ -1,5 +1,4 @@
 import logging
-import random
 import re
 import time
 from typing import List
@@ -7,7 +6,6 @@ from typing import List
 from .script import Instruction, Script
 
 logger = logging.getLogger(__name__)
-
 
 class ChangeWaitInstruction(Instruction):
     def __init__(self, wait: float):
@@ -60,18 +58,12 @@ class SendInstruction(Instruction):
         for send_character, receive_character in zip(
             self.send_value, self.receive_value
         ):
-            if script.standard_deviation is None:
-                time.sleep(script.delay)
-            else:
-                time.sleep(abs(random.gauss(script.delay, script.standard_deviation)))
+            script.typing_delay()
             script.process.send(str(send_character))
             script.process.expect(str(receive_character))
 
         # End instruction
-        if script.standard_deviation is None:
-            time.sleep(script.delay)
-        else:
-            time.sleep(abs(random.gauss(script.delay, script.standard_deviation)))
+        script.typing_delay()
 
 
 class SendCharacterInstruction(Instruction):
@@ -81,8 +73,10 @@ class SendCharacterInstruction(Instruction):
 
     def run(self, script: Script) -> None:
         super().run(script)
-        logger.debug("Send '%s'", self.send_value)
-        script.process.send(self.send_value)
+        logger.debug("SendCharacter '%s'", self.send_value)
+        for character in self.send_value:
+            script.typing_delay()
+            script.process.send(character)
 
 
 class SendShellInstruction(SendInstruction):
@@ -127,10 +121,7 @@ class SendArrowInstruction(Instruction):
         super().run(script)
         logger.debug("Send %s arrow %i times", self.send, self.num)
         for _ in range(self.num):
-            if script.standard_deviation is None:
-                time.sleep(script.delay)
-            else:
-                time.sleep(abs(random.gauss(script.delay, script.standard_deviation)))
+            script.typing_delay()
             if self.enter:
                 script.process.sendline(self.mapping[self.send])
             else:

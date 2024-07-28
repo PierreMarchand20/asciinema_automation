@@ -1,6 +1,7 @@
 import logging
 import pathlib
 import time
+import random
 from dataclasses import dataclass
 
 import pexpect
@@ -23,6 +24,12 @@ class Script:
     standard_deviation: float
     instructions: list[Instruction]
     delaybeforesend: float | None = None
+
+    def typing_delay(self):
+        if self.standard_deviation is None:
+            time.sleep(self.delay)
+        else:
+            time.sleep(abs(random.gauss(self.delay, self.standard_deviation)))
 
     def execute(self) -> None:
         spawn_command = (
